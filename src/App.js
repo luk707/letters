@@ -1,28 +1,36 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import confettiCannon from "./confetti-cannon";
+import "./App.css";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+const allLetters = "abcdefghijklmnopqrstuvwxyz".split("");
+
+const randomLetter = () =>
+  allLetters[Math.floor(Math.random() * allLetters.length)];
+
+function App() {
+  const [letter, setLetter] = useState(randomLetter());
+  useEffect(() => {
+    const handleKeydown = event => {
+      if (event.key === letter) {
+        confettiCannon({
+          particleCount: 100,
+          spread: 160
+          // any other options from the global
+          // confetti function
+        });
+        setLetter(randomLetter());
+      }
+    };
+    document.addEventListener("keydown", handleKeydown);
+    return () => {
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  });
+  return (
+    <div className="App">
+      <span>{letter}</span>
+    </div>
+  );
 }
 
 export default App;
