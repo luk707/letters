@@ -5,7 +5,7 @@ import "./App.css";
 const allLetters = "abcdefghijklmnopqrstuvwxyz".split("");
 
 const randomLetter = (currentLetter = null) =>
-  (currentLetter ? allLetters.filter(letter => letter !== currentLetter) : allLetters)[Math.floor(Math.random() * allLetters.length)];
+  allLetters.filter(letter => letter !== currentLetter)[Math.floor(Math.random() * allLetters.length)];
 
 function App() {
   const [letter, setLetter] = useState(randomLetter());
