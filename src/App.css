@@ -10,13 +10,6 @@
   font-size: 260px;
 }
 
-.App > span {
-  border-bottom: 1px dashed grey;
-  padding: 0 100px;
-  height: 293px;
-  margin-top: -25px;
-}
-
 #confetti {
   position: fixed;
   top: 0;
