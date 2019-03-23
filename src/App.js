@@ -4,8 +4,8 @@ import "./App.css";
 
 const allLetters = "abcdefghijklmnopqrstuvwxyz".split("");
 
-const randomLetter = () =>
-  allLetters[Math.floor(Math.random() * allLetters.length)];
+const randomLetter = (currentLetter = null) =>
+  (currentLetter ? allLetters.filter(letter => letter !== currentLetter) : allLetters)[Math.floor(Math.random() * allLetters.length)];
 
 function App() {
   const [letter, setLetter] = useState(randomLetter());
@@ -18,7 +18,7 @@ function App() {
           // any other options from the global
           // confetti function
         });
-        setLetter(randomLetter());
+        setLetter(randomLetter(letter));
       }
     };
     document.addEventListener("keydown", handleKeydown);
