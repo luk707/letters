@@ -7,7 +7,7 @@ let currentSound = { start: 0, end: 0 };
 audioPlayer.addEventListener(
   "timeupdate",
   function() {
-    if (audioPlayer.currentTime > currentSound.end) {
+    if (audioPlayer.currentTime > currentSound.end - 0.2) {
       audioPlayer.pause();
     }
   },
