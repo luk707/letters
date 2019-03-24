@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { Howl } from "howler";
 import confettiCannon from "./confetti-cannon";
+import audioSrc from "./media/audio.mp3";
 import "./App.css";
-import { sounds, play } from "./audio";
+
+const howler = new Howl({
+  src: [audioSrc],
+  sprite: {
+    fail: [0, 2000],
+    success: [2000, 4000]
+  }
+});
 
 const allLetters = "abcdefghijklmnopqrstuvwxyz".split("");
 
@@ -24,10 +33,10 @@ function App() {
           // confetti function
         });
         setLetter(randomLetter(letter));
-        play(sounds.success);
+        howler.play("success");
         return;
       }
-      play(sounds.fail);
+      howler.play("fail");
     };
     document.addEventListener("keydown", handleKeydown);
     return () => {
