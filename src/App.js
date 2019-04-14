@@ -7,7 +7,6 @@ import "./App.css";
 const howler = new Howl({
   src: [audioSrc],
   sprite: {
-    fail: [0, 2000],
     success: [2000, 4000]
   }
 });
@@ -36,7 +35,6 @@ function App() {
         howler.play("success");
         return;
       }
-      howler.play("fail");
     };
     document.addEventListener("keydown", handleKeydown);
     return () => {
