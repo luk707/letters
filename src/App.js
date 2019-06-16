@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Howl } from "howler";
 import confettiCannon from "./confetti-cannon";
 import audioSrc from "./media/audio.mp3";
+import Letters from "./screens/Letters";
+import Menu from "./screens/Menu";
+import Words from "./screens/Words";
 import "./App.css";
 
 const howler = new Howl({
@@ -11,39 +14,48 @@ const howler = new Howl({
   }
 });
 
-const allLetters = "abcdefghijklmnopqrstuvwxyz".split("");
-
-const randomLetter = (currentLetter = null) => {
-  const filteredLetters = allLetters.filter(letter => {
-    return letter !== currentLetter;
+const confetti = () =>
+  confettiCannon({
+    particleCount: 100,
+    spread: 160
   });
-  return filteredLetters[Math.floor(Math.random() * filteredLetters.length)];
+
+const screens = {
+  menu: Menu,
+  letters: Letters,
+  words: Words
+};
+
+const screenNames = Object.keys(screens);
+
+const getInitialScreen = () => {
+  const savedScreen = localStorage.getItem("screen") || "menu";
+  if (screenNames.includes(savedScreen)) {
+    return savedScreen;
+  }
+  return "menu";
 };
 
 function App() {
-  const [letter, setLetter] = useState(randomLetter());
+  const [screen, setScreen] = useState(getInitialScreen);
   useEffect(() => {
-    const handleKeydown = event => {
-      if (event.key === letter) {
-        confettiCannon({
-          particleCount: 100,
-          spread: 160
-          // any other options from the global
-          // confetti function
-        });
-        setLetter(randomLetter(letter));
-        howler.play("success");
-        return;
-      }
-    };
-    document.addEventListener("keydown", handleKeydown);
-    return () => {
-      document.removeEventListener("keydown", handleKeydown);
-    };
-  });
+    localStorage.setItem("screen", screen);
+  }, [screen]);
+  const Screen = screens[screen];
   return (
-    <div className="App">
-      <span>{letter}</span>
+    <div className={`App ${screen}`}>
+      {screen !== "menu" && (
+        <button className="menuButton" onClick={() => setScreen("menu")}>
+          Menu
+        </button>
+      )}
+      <Screen
+        audio={howler}
+        screenName={screen}
+        screenNames={screenNames}
+        setScreen={setScreen}
+        confetti={confetti}
+      />
     </div>
   );
 }
